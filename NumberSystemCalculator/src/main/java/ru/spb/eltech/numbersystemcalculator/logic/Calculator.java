@@ -1,5 +1,7 @@
 package ru.spb.eltech.numbersystemcalculator.logic;
 
+import ru.spb.eltech.numbersystemcalculator.exception.ExceedResultLenghtLimitException;
+
 /**
  * Created by andrey on 29.02.16.
  */
@@ -13,7 +15,7 @@ public interface Calculator
      * @param operation требуемая операция между числами
      * @return результат выполнения операции в виде числа
      */
-    String calculate(String firstArgument, String secondArgument, Operation operation);
+    String calculate(String firstArgument, String secondArgument, Operation operation) throws ExceedResultLenghtLimitException;
 
     /**
      * Валидация строкового представления числа

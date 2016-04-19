@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import ru.spb.eltech.numbersystemcalculator.Main;
+import ru.spb.eltech.numbersystemcalculator.exception.ExceedResultLenghtLimitException;
 import ru.spb.eltech.numbersystemcalculator.settings.Color;
 import ru.spb.eltech.numbersystemcalculator.settings.Settings;
 
@@ -40,7 +41,7 @@ public class InputRepeatTest
     };
 
     @Test
-    public void testRepeatInput() throws IOException {
+    public void testRepeatInput() throws IOException, ExceedResultLenghtLimitException {
 
         // Эмулируем ввод числа
         BufferedReader readerMock = mock(BufferedReader.class);

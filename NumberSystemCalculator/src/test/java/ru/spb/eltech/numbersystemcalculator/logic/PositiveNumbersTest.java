@@ -15,7 +15,7 @@ public class PositiveNumbersTest {
 
     private final ResourceBundle locale = ResourceBundle.getBundle("output");
 
-    private final Calculator calculator = new CalculatorImpl(16, 16);
+    private final Calculator calculator = new CalculatorImpl(16, 16, 999);
 
     private final String[] positiveNumbers = new String[] {
             "0",
