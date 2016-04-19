@@ -1,5 +1,6 @@
 package ru.spb.eltech.numbersystemcalculator;
 
+import ru.spb.eltech.numbersystemcalculator.exception.ExceedResultLenghtLimitException;
 import ru.spb.eltech.numbersystemcalculator.logic.Calculator;
 import ru.spb.eltech.numbersystemcalculator.logic.CalculatorImpl;
 import ru.spb.eltech.numbersystemcalculator.logic.Operation;
@@ -21,6 +22,7 @@ public class Main
 {
     private static final int NUMBER_SYSTEM = 30;
     private static final int MAX_DIGITS_COUNT = 32;
+    private static final int MAX_RESULT_COUNT_OF_DIGITS = 40;
 
     private static final ResourceBundle locale = ResourceBundle.getBundle("output", new Locale("ru"));
 
@@ -29,7 +31,8 @@ public class Main
     private static Settings settings = SettingsImpl.getInstance();
 
     private static Calculator calculator =
-            new CalculatorImpl(NUMBER_SYSTEM, MAX_DIGITS_COUNT, Arrays.asList(Operation.MULTIPLICATION));
+            new CalculatorImpl(NUMBER_SYSTEM, MAX_DIGITS_COUNT, MAX_RESULT_COUNT_OF_DIGITS,
+                    Arrays.asList(Operation.MULTIPLICATION));
 
     public static void main(String[] args) throws IOException {
         settings.setFontColor(Color.White, System.out);
@@ -44,7 +47,12 @@ public class Main
             System.out.println("\n" + locale.getString("input2"));
             String secondNumber = getNumberFromScanner().toUpperCase();
 
-            String result = calculator.calculate(firstNumber, secondNumber, Operation.MULTIPLICATION);
+            String result = null;
+            try {
+                result = calculator.calculate(firstNumber, secondNumber, Operation.MULTIPLICATION);
+            } catch (ExceedResultLenghtLimitException e) {
+                result = locale.getString("long_result");
+            }
 
             System.out.println("\n" + locale.getString("result"));
             System.out.println(firstNumber + " x " + secondNumber + " = " + result);

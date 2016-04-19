@@ -9,9 +9,9 @@ import ru.spb.eltech.numbersystemcalculator.exception.ExceedResultLenghtLimitExc
  */
 public class ResultLenghtLimitTest {
 
-    private final int RESULT_MAX_LENGTH = 3;
+    private final int RESULT_MAX_LENGTH = 2;
 
-    private final Calculator calculator = new CalculatorImpl(10, 10);
+    private final Calculator calculator = new CalculatorImpl(10, 10, RESULT_MAX_LENGTH);
 
     private final String[][] validPairNumbers = new String[][] {
             {"0", "1"},
@@ -32,13 +32,12 @@ public class ResultLenghtLimitTest {
     };
 
     @Test
-    public void testValidResult()
-    {
+    public void testValidResult() throws ExceedResultLenghtLimitException {
         for (String[] pair : validPairNumbers)
         {
             String result = calculator.calculate(pair[0], pair[1], Operation.MULTIPLICATION);
             Assert.assertNotNull(result);
-            Assert.assertTrue(result.length() < 3);
+            Assert.assertTrue(result.length() <= RESULT_MAX_LENGTH);
         }
     }
 

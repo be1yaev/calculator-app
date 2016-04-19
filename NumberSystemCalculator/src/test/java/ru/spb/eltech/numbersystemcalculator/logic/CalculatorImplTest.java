@@ -40,7 +40,7 @@ public class CalculatorImplTest {
 
     @Test
     public void testCalculate() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(16, 16);
+        CalculatorImpl calculator = new CalculatorImpl(16, 16, 999);
 
         assertEquals("0", calculator.calculate("0", "0", Operation.MULTIPLICATION));
         assertEquals("0", calculator.calculate("1", "0", Operation.MULTIPLICATION));
@@ -56,7 +56,7 @@ public class CalculatorImplTest {
 
     @Test
     public void testCalculateFor30NumberSystem() throws Exception {
-        CalculatorImpl calculator30 = new CalculatorImpl(30, 30);
+        CalculatorImpl calculator30 = new CalculatorImpl(30, 30, 999);
 
         assertEquals("0", calculator30.calculate("0", "0", Operation.MULTIPLICATION));
         assertEquals("0", calculator30.calculate("1", "0", Operation.MULTIPLICATION));
@@ -67,7 +67,7 @@ public class CalculatorImplTest {
 
     @Test
     public void testGetValidationErrorMessage() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(34, 34);
+        CalculatorImpl calculator = new CalculatorImpl(34, 34, 999);
 
         for (String s : regularStrings) {
             Assert.assertNull(calculator.getValidationErrorMessage(s));
@@ -80,21 +80,21 @@ public class CalculatorImplTest {
 
     @Test
     public void testGetValidationErrorMessageForLongStrings() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(10, 2);
+        CalculatorImpl calculator = new CalculatorImpl(10, 2, 999);
         assertNull(calculator.getValidationErrorMessage("12"));
         assertNotNull(calculator.getValidationErrorMessage("123"));
     }
 
     @Test
     public void testGetValidationErrorMessageForIncorrectNumberSystem() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(2, 10);
+        CalculatorImpl calculator = new CalculatorImpl(2, 10, 999);
         assertNull(calculator.getValidationErrorMessage("11"));
         assertNotNull(calculator.getValidationErrorMessage("12"));
     }
 
     @Test
     public void testIntValueToString() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(16, 10);
+        CalculatorImpl calculator = new CalculatorImpl(16, 10, 999);
 
         assertEquals("1", calculator.intValueToString(1));
         assertEquals("F", calculator.intValueToString(15));
@@ -102,14 +102,14 @@ public class CalculatorImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testIntValueToStringIncorrectNumberSystem() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(16, 10);
+        CalculatorImpl calculator = new CalculatorImpl(16, 10, 999);
 
         assertEquals("E", calculator.intValueToString(16));
     }
 
     @Test
     public void testCharValueToInt() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(16, 10);
+        CalculatorImpl calculator = new CalculatorImpl(16, 10, 999);
 
         assertEquals(0, calculator.charValueToInt('0'));
         assertEquals(1, calculator.charValueToInt('1'));
@@ -120,7 +120,7 @@ public class CalculatorImplTest {
 
     @Test
     public void testConvertToValueInTwentyNumberSystem() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(16, 10);
+        CalculatorImpl calculator = new CalculatorImpl(16, 10, 999);
 
         assertEquals(new BigInteger("1"), calculator.convertToValueInTwentyNumberSystem("1"));
         assertEquals(new BigInteger("10"), calculator.convertToValueInTwentyNumberSystem("A"));
@@ -132,7 +132,7 @@ public class CalculatorImplTest {
 
     @Test
     public void testConvertToValueInSpecefiedNumberSystem() throws Exception {
-        CalculatorImpl calculator = new CalculatorImpl(16, 10);
+        CalculatorImpl calculator = new CalculatorImpl(16, 10, 999);
 
         assertEquals("1", calculator.convertToValueInSpecefiedNumberSystem(new BigInteger("1")));
         assertEquals("A", calculator.convertToValueInSpecefiedNumberSystem(new BigInteger("10")));

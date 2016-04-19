@@ -1,5 +1,7 @@
 package ru.spb.eltech.numbersystemcalculator.logic;
 
+import ru.spb.eltech.numbersystemcalculator.exception.ExceedResultLenghtLimitException;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,30 +19,35 @@ public class CalculatorImpl implements Calculator {
 
     private final int NUMBER_SYSTEM;
     private final int MAX_COUNT_OF_DIGITS;
+    private final int MAX_RESULT_COUNT_OF_DIGITS;
     private final Collection<Operation> POSSIBLE_OPERATIONS;
 
     private final ResourceBundle locale = ResourceBundle.getBundle("output", new Locale("ru"));
 
     /**
-     * Создание объекта калькулятора с выбранной системой счисления и максимальным числом разрядов
+     * Создание объекта калькулятора с выбранной системой счисления, максимальным числом разрядов и максимальной
+     * длиной результата
      *
      * @param numberSystem выбранная система счисления
      * @param maxCountOfDigits максимальное количество разрядов
+     * @param maxCountOfResultDigits максимальная длина результата
      */
-    public CalculatorImpl(int numberSystem, int maxCountOfDigits)
+    public CalculatorImpl(int numberSystem, int maxCountOfDigits, int maxCountOfResultDigits)
     {
-        this(numberSystem, maxCountOfDigits, Arrays.asList((Operation.values())));
+        this(numberSystem, maxCountOfDigits, maxCountOfResultDigits, Arrays.asList((Operation.values())));
     }
 
     /**
-     * Создание объекта калькулятора с выбранной системой счисления, максимальным числом разрядов и возможностью
-     * только определенных операций
+     * Создание объекта калькулятора с выбранной системой счисления, максимальным числом разрядов, максимальной
+     * длиной результата и возможностью только определенных операций
      *
      * @param numberSystem выбранная система счисления
      * @param maxCountOfDigits максимальное количество разрядов
+     * @param maxCountOfResultDigits максимальная длина результата
      * @param possibleOperations возможные операции между числами
      */
-    public CalculatorImpl(int numberSystem, int maxCountOfDigits, Collection<Operation> possibleOperations) {
+    public CalculatorImpl(int numberSystem, int maxCountOfDigits, int maxCountOfResultDigits,
+                          Collection<Operation> possibleOperations) {
 
         if (numberSystem < 2 || numberSystem >= MAX_DIGIT_VALUE) {
             throw new IllegalArgumentException(locale.getString("not_supported_number_system") + (MAX_DIGIT_VALUE - 1));
@@ -49,9 +56,11 @@ public class CalculatorImpl implements Calculator {
         this.NUMBER_SYSTEM = numberSystem;
         this.POSSIBLE_OPERATIONS = possibleOperations;
         this.MAX_COUNT_OF_DIGITS = maxCountOfDigits;
+        this.MAX_RESULT_COUNT_OF_DIGITS = maxCountOfResultDigits;
     }
 
-    public String calculate(String firstArgument, String secondArgument, Operation operation) {
+    public String calculate(String firstArgument, String secondArgument, Operation operation)
+            throws ExceedResultLenghtLimitException {
 
         if (!POSSIBLE_OPERATIONS.contains(operation)) {
             throw new IllegalStateException(locale.getString("not_possible_operation"));
@@ -60,17 +69,23 @@ public class CalculatorImpl implements Calculator {
         BigInteger firstNumber = convertToValueInTwentyNumberSystem(firstArgument);
         BigInteger secondNumber = convertToValueInTwentyNumberSystem(secondArgument);
 
-        BigInteger  result;
+        BigInteger  decimalResult;
 
         switch (operation) {
             case MULTIPLICATION:
-                result = firstNumber.multiply(secondNumber);
+                decimalResult = firstNumber.multiply(secondNumber);
                 break;
             default:
                 throw new IllegalStateException(locale.getString("not_implemented_operation"));
         }
 
-        return convertToValueInSpecefiedNumberSystem(result);
+        String resultString = convertToValueInSpecefiedNumberSystem(decimalResult);
+
+        if (resultString.length() > MAX_RESULT_COUNT_OF_DIGITS) {
+            throw new ExceedResultLenghtLimitException();
+        }
+
+        return resultString;
     }
 
     public boolean validateNumberString(String numberValue) {
