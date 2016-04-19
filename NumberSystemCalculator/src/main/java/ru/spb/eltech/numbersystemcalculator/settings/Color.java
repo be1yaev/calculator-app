@@ -7,6 +7,7 @@ public enum Color
 {
     White("\u001B[97m"),
     Black("\u001B[38m"),
+    Red("\u001B[31m"),
     BlackBackground("\u001B[40m"),
     Reset("\u001B[0m");
 

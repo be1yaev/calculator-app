@@ -54,8 +54,10 @@ public class Main
                 result = locale.getString("long_result");
             }
 
+            settings.setFontColor(Color.Red, System.out);
             System.out.println("\n" + locale.getString("result"));
             System.out.println(firstNumber + " x " + secondNumber + " = " + result);
+            settings.setFontColor(Color.White, System.out);
 
             System.out.println("\n" + locale.getString("repeat"));
             inReader.readLine();
